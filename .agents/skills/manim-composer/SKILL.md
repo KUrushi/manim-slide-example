@@ -19,7 +19,7 @@ description: |
    - Note common misconceptions to address
 
 2. **Identify the narrative hook**
-   - What question does this video answer?
+   - What question does this video answer1?
    - Why should the viewer care?
    - What's the surprising or counterintuitive element?
 

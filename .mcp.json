@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest",
+        "--browser", "chrome",
+        "--headless",
+        "--caps", "vision",
+        "--allow-unrestricted-file-access"
+      ]
+    }
+  }
+}
