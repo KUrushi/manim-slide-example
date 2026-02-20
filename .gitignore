@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual environment
+.venv/
+
+# Manim / manim-slides generated files
+media/
+output.html
+output_assets/
+
+# Playwright MCP
+.playwright-mcp/
+
+# Screenshots and review artifacts
+*.png
+review/
+presentation_analysis.md
+presentation_report.md
+
+# Slides export
+slides/
