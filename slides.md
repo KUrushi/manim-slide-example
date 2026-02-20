@@ -89,9 +89,10 @@ Slides 3-4                      Slides 7-15                    Slide 16
 - "manim-slides" (Primary, Accent)
 - "Python コードで書くアニメーション付きスライド" (Secondary)
 - "Manim の描画力 × プレゼンの操作性" (Secondary)
+- "HTML エクスポート → Playwright MCP で AI レビュー" (Secondary)
 
 ### Speaker Notes
-「そこで manim-slides です。3Blue1Brown で有名な Manim をベースに、アニメーション付きスライドを Python コードだけで作れるツールです。HTML やパワポにもエクスポートできます。」
+「そこで manim-slides です。3Blue1Brown で有名な Manim をベースに、アニメーション付きスライドを Python コードだけで作れるツールです。HTML にエクスポートできるので、Playwright MCP でブラウザを自動操作してスライドを AI にレビューさせることもできます。これが manim-slides を選ぶ大きな理由の一つです。」
 
 ---
 
@@ -146,20 +147,21 @@ Slides 3-4                      Slides 7-15                    Slide 16
 ワークフローを7ステップのフロー図で表示:
 1. "アイデアを伝える"
 2. "対話で要件を詰める"
-3. "slides.md 生成"
-4. "コード生成"
+3. "slides.md 生成" + `/slides-composer` (Tertiary, スキル名)
+4. "コード生成" + `/manim-slides-best-practices` (Tertiary, スキル名)
 5. "レンダリング"
-6. "レビュー & 改善"
+6. "レビュー & 改善" + `/slide-reviewer` (Tertiary, スキル名)
 7. "発表 & エクスポート"
 
 ### Visual Elements
 - 2行のフロー図（RoundedRectangle + Arrow）: 1行目に Step 1-4、2行目に Step 5-7
 - **Claude Code が自動化するステップ（3, 4, 6）はブルー枠**で強調し、それ以外はグレー枠
-- 凡例: ブルー枠の四角 + "= Claude Code が自動化"
+- ブルー枠のステップには、枠内下部にスキル名（`/slides-composer` 等）を Tertiary サイズで表示
+- 凡例: ブルー枠の四角 + "= Claude Code カスタムスキル"
 - まず全体を一度に表示し、以降のスライドで各ステップを掘り下げる
 
 ### Speaker Notes
-「ワークフローは全部で7ステップです。ブルーの枠がついているのは Claude Code が自動でやってくれる部分です。まず全体像を見てから、各ステップを詳しく見ていきましょう。」
+「ワークフローは全部で7ステップです。ブルーの枠がついているのは Claude Code のカスタムスキルが自動でやってくれる部分です。Claude Code にはプロジェクト固有の知識やルールを教えられるカスタムスキルという機能があり、このワークフローでは3つのスキルを使います。slides-composer が構成設計、manim-slides-best-practices がコード生成、slide-reviewer がレビューを担当します。」
 
 ---
 

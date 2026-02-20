@@ -110,13 +110,14 @@ class ClaudeCodeManimSlides(Slide):
         self.switch_slide(slide4)
 
         # ---- SLIDE 5: What is manim-slides? ----
-        self.next_slide(notes="そこで manim-slides です。Manim をベースに、アニメーション付きスライドを Python コードだけで作れるツールです。")
+        self.next_slide(notes="そこで manim-slides です。Manim をベースに、アニメーション付きスライドを Python コードだけで作れるツールです。HTML にエクスポートできるので、Playwright MCP でブラウザを自動操作してスライドを AI にレビューさせることもできます。これが manim-slides を選ぶ大きな理由の一つです。")
 
         self.update_slide_number()
         manim_title = Text("manim-slides", font_size=52, color=ACCENT, weight=BOLD, font=FONT_MAIN)
         desc1 = Text("Python コードで書くアニメーション付きスライド", font_size=26, color=TEXT_PRIMARY, font=FONT_MAIN)
         desc2 = Text("Manim の描画力 × プレゼンの操作性", font_size=26, color=TEXT_PRIMARY, font=FONT_MAIN)
-        slide5 = VGroup(manim_title, desc1, desc2).arrange(DOWN, buff=0.6)
+        desc3 = Text("HTML エクスポート → Playwright MCP で AI レビュー", font_size=26, color=TEXT_PRIMARY, font=FONT_MAIN)
+        slide5 = VGroup(manim_title, desc1, desc2, desc3).arrange(DOWN, buff=0.6)
         self.switch_slide(slide5)
 
         # ---- SLIDE 6: Animation Power — Sorting Example ----
@@ -215,7 +216,7 @@ class ClaudeCodeManimSlides(Slide):
         self.switch_slide(bridge)
 
         # ---- SLIDE 7: Workflow Overview ----
-        self.next_slide(notes="ワークフローは全部で7ステップです。まず全体像を見てから、各ステップを詳しく見ていきましょう。")
+        self.next_slide(notes="ワークフローは全部で7ステップです。ブルーの枠がついているのは Claude Code のカスタムスキルが自動でやってくれる部分です。Claude Code にはプロジェクト固有の知識やルールを教えられるカスタムスキルという機能があり、このワークフローでは3つのスキルを使います。slides-composer が構成設計、manim-slides-best-practices がコード生成、slide-reviewer がレビューを担当します。")
 
         self.update_slide_number()
 
@@ -232,23 +233,34 @@ class ClaudeCodeManimSlides(Slide):
             "6. レビュー & 改善",
             "7. 発表 & エクスポート",
         ]
+        # スキル名（ブルー枠のステップのみ）
+        skill_names = [
+            None, None, "/slides-composer",
+            "/manim-slides-best-practices", None, "/slide-reviewer", None,
+        ]
         step_colors = [
             TEXT_SECONDARY, TEXT_SECONDARY, ACCENT,
             ACCENT, TEXT_SECONDARY, ACCENT, TEXT_SECONDARY,
         ]
 
         boxes = VGroup()
-        for label, color in zip(step_labels, step_colors):
+        for label, color, skill in zip(step_labels, step_colors, skill_names):
             box = RoundedRectangle(
-                corner_radius=0.1, width=2.5, height=1.0,
+                corner_radius=0.1, width=3.0, height=1.0,
                 color=color, fill_opacity=0.08,
             )
             txt = Text(label, font_size=18, color=TEXT_PRIMARY, font=FONT_MAIN)
-            txt.move_to(box)
-            boxes.add(VGroup(box, txt))
+            if skill:
+                skill_txt = Text(skill, font_size=11, color=TEXT_TERTIARY, font=FONT_CODE)
+                content = VGroup(txt, skill_txt).arrange(DOWN, buff=0.12)
+                content.move_to(box)
+                boxes.add(VGroup(box, content))
+            else:
+                txt.move_to(box)
+                boxes.add(VGroup(box, txt))
 
         def make_arrow():
-            return Arrow(ORIGIN, RIGHT * 0.4, color=TEXT_TERTIARY, stroke_width=2,
+            return Arrow(ORIGIN, RIGHT * 0.3, color=TEXT_TERTIARY, stroke_width=2,
                          max_tip_length_to_length_ratio=0.3)
 
         # Row 1: Steps 1-4
@@ -257,7 +269,7 @@ class ClaudeCodeManimSlides(Slide):
             row1.add(boxes[i])
             if i < 3:
                 row1.add(make_arrow())
-        row1.arrange(RIGHT, buff=0.15)
+        row1.arrange(RIGHT, buff=0.08)
 
         # Row 2: Steps 5-7
         row2 = VGroup()
@@ -265,16 +277,16 @@ class ClaudeCodeManimSlides(Slide):
             row2.add(boxes[i])
             if i < 6:
                 row2.add(make_arrow())
-        row2.arrange(RIGHT, buff=0.15)
+        row2.arrange(RIGHT, buff=0.08)
 
         flow = VGroup(row1, row2).arrange(DOWN, buff=0.5)
 
-        # 凡例: アクセントカラーの意味を明示
+        # 凡例: カスタムスキルの意味を明示
         legend_box = RoundedRectangle(
             corner_radius=0.05, width=0.25, height=0.25,
             color=ACCENT, fill_opacity=0.08,
         )
-        legend_text = Text("= Claude Code が自動化", font_size=14, color=TEXT_PRIMARY, font=FONT_MAIN)
+        legend_text = Text("= Claude Code カスタムスキル", font_size=14, color=TEXT_PRIMARY, font=FONT_MAIN)
         legend = VGroup(legend_box, legend_text).arrange(RIGHT, buff=0.2)
         legend.to_edge(DOWN, buff=0.8)
 
@@ -345,8 +357,8 @@ class ClaudeCodeManimSlides(Slide):
         ]
         line_mobjects = VGroup()
         for key, val, kcolor, vcolor in doc_lines_data:
-            k = Text(key, font_size=18, color=kcolor, weight=BOLD, font=FONT_MAIN)
-            v = Text(val, font_size=18, color=vcolor, font=FONT_MAIN)
+            k = Text(key, font_size=22, color=kcolor, weight=BOLD, font=FONT_MAIN)
+            v = Text(val, font_size=22, color=vcolor, font=FONT_MAIN)
             line_mobjects.add(VGroup(k, v).arrange(RIGHT, buff=0.3))
         line_mobjects.arrange(DOWN, buff=0.35, aligned_edge=LEFT)
         line_mobjects.move_to(doc_box)
@@ -369,10 +381,10 @@ class ClaudeCodeManimSlides(Slide):
             corner_radius=0.15, width=9.0, height=3.0,
             color=TEXT_SECONDARY, fill_opacity=0.05,
         )
-        code_line1 = Text("class Presentation(Slide):", font_size=18, color=ACCENT, font=FONT_CODE)
-        code_line2 = Text("def construct(self):", font_size=18, color=TEXT_PRIMARY, font=FONT_CODE)
-        code_line3 = Text("# Canvas, Wipe, Progressive reveal...", font_size=18, color=TEXT_SECONDARY, font=FONT_CODE)
-        code_line4 = Text("# 全て自動で構成", font_size=18, color=TEXT_SECONDARY, font=FONT_CODE)
+        code_line1 = Text("class Presentation(Slide):", font_size=22, color=ACCENT, font=FONT_CODE)
+        code_line2 = Text("def construct(self):", font_size=22, color=TEXT_PRIMARY, font=FONT_CODE)
+        code_line3 = Text("# Canvas, Wipe, Progressive reveal...", font_size=22, color=TEXT_SECONDARY, font=FONT_CODE)
+        code_line4 = Text("# 全て自動で構成", font_size=22, color=TEXT_SECONDARY, font=FONT_CODE)
         code_lines = VGroup(code_line1, code_line2, code_line3, code_line4)
         code_lines.arrange(DOWN, buff=0.25, aligned_edge=LEFT)
         # Python のインデントを明示的に再現
@@ -449,7 +461,7 @@ class ClaudeCodeManimSlides(Slide):
 
         # ブラウザウィンドウ風デザイン
         browser_bg = RoundedRectangle(
-            corner_radius=0.15, width=9.0, height=3.5,
+            corner_radius=0.15, width=9.0, height=3.0,
             color=TEXT_SECONDARY, fill_opacity=0.05,
             fill_color="#2C2C2E",
         )
@@ -477,10 +489,10 @@ class ClaudeCodeManimSlides(Slide):
 
         browser = VGroup(browser_bg, b_window_bar, review_items)
 
-        review_note = Text("スクリーンショット × 聴衆視点の自動評価", font_size=20, color=TEXT_PRIMARY, font=FONT_MAIN)
+        review_note = Text("スクリーンショット × 聴衆視点の自動評価", font_size=18, color=TEXT_PRIMARY, font=FONT_MAIN)
 
-        slide13_body = VGroup(step6_title, step6_subtitle, browser, review_note).arrange(DOWN, buff=0.35)
-        slide13 = VGroup(step6_label, slide13_body).arrange(DOWN, buff=0.6)
+        slide13_body = VGroup(step6_title, step6_subtitle, browser, review_note).arrange(DOWN, buff=0.3)
+        slide13 = VGroup(step6_label, slide13_body).arrange(DOWN, buff=0.4)
 
         self.switch_slide(slide13)
 
