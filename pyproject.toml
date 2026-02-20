@@ -6,4 +6,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "manim>=0.19.1",
+    "manim-slides[manim]>=5.5.0",
+    "pyside6-addons>=6.10.2",
+    "pyside6-essentials>=6.10.2",
 ]
