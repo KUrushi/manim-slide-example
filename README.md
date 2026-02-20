@@ -90,6 +90,34 @@ claude
 
 レビュー結果に基づいて `presentation.py` を修正し、手順 3 からやり直します。
 
+## ファイルの説明
+
+### slides.md — スライド構成書
+
+Claude Code の `/slides-composer` スキルが生成するスライド構成書です。プレゼンテーションの設計図として機能し、以下の情報を含みます。
+
+- **Overview**: トピック、Key Message、対象聴衆、発表時間
+- **各スライドの定義**: タイプ（Title / Conclusion / Detail など）、コンテンツ、Visual Elements、Speaker Notes
+- **Presentation Structure**: Pyramid Principle（結論先行）と Staircase Method（段階的合意構築）に基づく構成設計
+- **Design Specification**: カラーパレット（Background / Primary / Secondary / Tertiary / Accent）、フォント戦略（サイズ・ウェイト・用途）
+- **Transition Plan**: スライド間のトランジション指定（FadeOut + FadeIn / Wipe）
+- **Checklist**: 設計品質の確認項目
+
+このファイルが presentation.py のコード生成の入力となります。自分のプレゼンテーションを作る場合は、このファイルを参考に構成を設計してください。
+
+### presentation.py — manim-slides ソースコード
+
+`slides.md` をもとに生成された manim-slides の Python コードです。主な構成要素:
+
+- **`ClaudeCodeManimSlides(Slide)`**: メインのスライドクラス。`Slide` を継承し、`construct()` メソッドでスライドを定義
+- **Canvas**: スライド番号を全スライド共通で右下に表示（`add_to_canvas()`）
+- **`next_slide()`**: スライドの区切り。`notes=` 引数で Speaker Notes を設定
+- **`switch_slide()`**: 前スライドの要素を除去して新しいコンテンツに切り替えるヘルパー
+- **カラーパレット**: Apple HIG Dark Mode ベースの配色定数（`ACCENT`, `TEXT_PRIMARY` など）
+- **アニメーション例**: バブルソートの可視化（バーチャートの比較・交換を段階的にアニメーション）
+
+全17スライドで、タイトル → 結論 → 課題の共感 → manim-slides 紹介 → ソートアニメーション → ワークフロー7ステップの詳細 → メタ実証 → クロージング、という流れです。
+
 ## プロジェクト構成
 
 ```
